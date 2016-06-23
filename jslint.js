@@ -1,5 +1,5 @@
 // jslint.js
-// 2016-04-08
+// 2016-05-25
 // Copyright (c) 2015 Douglas Crockford  (www.JSLint.com)
 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -83,38 +83,37 @@
 // WARNING: JSLint will hurt your feelings.
 
 /*property
-    a, and, arity, b, bad_assignment_a, bad_character_number_a,
-    bad_directive_a, bad_get, bad_module_name_a, bad_option_a, bad_property_a,
-    bad_set, bitwise, block, body, browser, c, calls, catch, charAt,
-    charCodeAt, closer, closure, code, column, concat, constant, context,
-    couch, create, d, dead, devel, directive, directives, disrupt, dot,
-    duplicate_a, edition, ellipsis, else, empty_block, es6, eval, every,
-    expected_a_at_b_c, expected_a_b, expected_a_b_from_c_d,
-    expected_a_before_b, expected_digits_after_a, expected_four_digits,
-    expected_identifier_a, expected_line_break_a_b, expected_regexp_factor_a,
-    expected_space_a_b, expected_statements_a, expected_string_a,
-    expected_type_string_a, expression, extra, flag, for, forEach, free, from,
-    fud, fudge, function, function_in_loop, functions, g, global, i, id,
-    identifier, import, imports, inc, indexOf, infix_in, init, initial,
-    isArray, isNaN, join, json, keys, label, label_a, lbp, led, length, level,
-    line, lines, live, loop, m, margin, match, maxerr, maxlen, message,
-    misplaced_a, misplaced_directive_a, missing_browser, module, multivar,
-    naked_block, name, names, nested_comment, new, node, not_label_a, nud, ok,
-    open, option, out_of_scope_a, parameters, pop, property, push, qmark,
-    quote, redefinition_a_b, replace, reserved_a, role, search, signature,
-    slash_equal, slice, some, sort, split, statement, stop, strict,
+    a, and, arity, b, bad_assignment_a, bad_directive_a, bad_get,
+    bad_module_name_a, bad_option_a, bad_property_a, bad_set, bitwise, block,
+    body, browser, c, calls, catch, charAt, charCodeAt, closer, closure, code,
+    column, concat, constant, context, couch, create, d, dead, devel,
+    directive, directives, disrupt, dot, duplicate_a, edition, ellipsis, else,
+    empty_block, es6, eval, every, expected_a_at_b_c, expected_a_b,
+    expected_a_b_from_c_d, expected_a_before_b, expected_digits_after_a,
+    expected_four_digits, expected_identifier_a, expected_line_break_a_b,
+    expected_regexp_factor_a, expected_space_a_b, expected_statements_a,
+    expected_string_a, expected_type_string_a, expression, extra, flag, for,
+    forEach, free, from, fud, fudge, function, function_in_loop, functions, g,
+    global, i, id, identifier, import, imports, inc, indexOf, infix_in, init,
+    initial, isArray, isNaN, join, json, keys, label, label_a, lbp, led,
+    length, level, line, lines, live, loop, m, margin, match, maxerr, maxlen,
+    message, misplaced_a, misplaced_directive_a, missing_browser, module,
+    multivar, naked_block, name, names, nested_comment, new, node, not_label_a,
+    nud, number_isNaN, ok, open, option, out_of_scope_a, parameters, pop,
+    property, push, qmark, quote, redefinition_a_b, replace, reserved_a, role,
+    search, signature, slice, some, sort, split, statement, stop, strict,
     subscript_a, switch, test, this, thru, toString, todo_comment, tokens,
-    too_long, too_many, tree, type, u, unclosed_comment, unclosed_mega,
-    unclosed_string, undeclared_a, unexpected_a, unexpected_a_after_b,
-    unexpected_at_top_level_a, unexpected_char_a, unexpected_comment,
-    unexpected_directive_a, unexpected_expression_a, unexpected_label_a,
-    unexpected_parens, unexpected_space_a_b, unexpected_statement_a,
-    unexpected_trailing_space, unexpected_typeof_a, uninitialized_a,
-    unreachable_a, unregistered_property_a, unsafe, unused_a, use_spaces, used,
-    value, var_loop, var_switch, variable, warning, warnings,
+    too_long, too_many, too_many_digits, tree, type, u, unclosed_comment,
+    unclosed_mega, unclosed_string, undeclared_a, unexpected_a,
+    unexpected_a_after_b, unexpected_at_top_level_a, unexpected_char_a,
+    unexpected_comment, unexpected_directive_a, unexpected_expression_a,
+    unexpected_label_a, unexpected_parens, unexpected_space_a_b,
+    unexpected_statement_a, unexpected_trailing_space, unexpected_typeof_a,
+    uninitialized_a, unreachable_a, unregistered_property_a, unsafe, unused_a,
+    use_spaces, used, value, var_loop, var_switch, variable, warning, warnings,
     weird_condition_a, weird_expression_a, weird_loop, weird_relation_a, white,
-    wrap_assignment, wrap_condition, wrap_immediate, wrap_regexp, wrap_unary,
-    wrapped, writable, y
+    wrap_assignment, wrap_condition, wrap_immediate, wrap_parameter,
+    wrap_regexp, wrap_unary, wrapped, writable, y
 */
 
 var jslint = (function JSLint() {
@@ -269,7 +268,7 @@ var jslint = (function JSLint() {
 
         "Array", "Boolean", "Date", "decodeURI", "decodeURIComponent",
         "encodeURI", "encodeURIComponent", "Error", "EvalError", "isFinite",
-        "isNaN", "JSON", "Math", "Number", "Object", "parseInt", "parseFloat",
+        "JSON", "Math", "Number", "Object", "parseInt", "parseFloat",
         "RangeError", "ReferenceError", "RegExp", "String", "SyntaxError",
         "TypeError", "URIError"
     ];
@@ -285,7 +284,6 @@ var jslint = (function JSLint() {
 
         and: "The '&&' subexpression should be wrapped in parens.",
         bad_assignment_a: "Bad assignment to '{a}'.",
-        bad_character_number_a: "Bad character code: '{a}'",
         bad_directive_a: "Bad directive '{a}'.",
         bad_get: "A get function takes no parameters.",
         bad_module_name_a: "Bad module name '{a}'.",
@@ -318,14 +316,15 @@ var jslint = (function JSLint() {
         naked_block: "Naked block.",
         nested_comment: "Nested comment.",
         not_label_a: "'{a}' is not a label.",
+        number_isNaN: "Use Number.isNaN function to compare with NaN.",
         out_of_scope_a: "'{a}' is out of scope.",
         redefinition_a_b: "Redefinition of '{a}' from line {b}.",
         reserved_a: "Reserved name '{a}'.",
-        slash_equal: "A regular expression literal can be confused with '/='.",
         subscript_a: "['{a}'] is better written in dot notation.",
         todo_comment: "Unexpected TODO comment.",
         too_long: "Line too long.",
         too_many: "Too many warnings.",
+        too_many_digits: "Too many digits.",
         unclosed_comment: "Unclosed comment.",
         unclosed_mega: "Unclosed mega literal.",
         unclosed_string: "Unclosed string.",
@@ -361,6 +360,7 @@ var jslint = (function JSLint() {
                 "parentheses to assist the reader in understanding that the " +
                 "expression is the result of a function, and not the " +
                 "function itself.",
+        wrap_parameter: "Wrap the parameter in parens.",
         wrap_regexp: "Wrap this regexp in parens to avoid confusion.",
         wrap_unary: "Wrap the unary expression in parens."
     };
@@ -375,6 +375,7 @@ var jslint = (function JSLint() {
     var rx_unsafe = /[\u0000-\u001f\u007f-\u009f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/;
 // identifier
     var rx_identifier = /^([a-zA-Z_$][a-zA-Z0-9_$]*)$/;
+    var rx_module = /^[a-zA-Z0-9_$:.@\-\/]+$/;
     var rx_bad_property = /^_|\$|Sync$|_$/;
 // star slash
     var rx_star_slash = /\*\//;
@@ -484,6 +485,7 @@ var jslint = (function JSLint() {
     }
 
     function warn_at(code, line, column, a, b, c, d) {
+
 // Report an error at some line and column of the program. The warning object
 // resembles an exception.
 
@@ -522,6 +524,7 @@ var jslint = (function JSLint() {
     }
 
     function warn(code, the_token, a, b, c, d) {
+
 // Same as warn_at, except the warning will be associated with a specific token.
 // If there is already a warning on this token, suppress the new one. It is
 // likely that the first warning will be the most meaningful.
@@ -547,7 +550,7 @@ var jslint = (function JSLint() {
 
 // Similar to warn and stop_at. If the token already had a warning, that
 // warning will be replaced with this new one. It is likely that the stopping
-// warning will be the most meaningful.
+// warning will be the more meaningful.
 
         if (the_token === undefined) {
             the_token = next_token;
@@ -1301,7 +1304,7 @@ var jslint = (function JSLint() {
             case "'":
                 return string(snippet);
 
-// The token is a megastring. We don't allow any kind if mega nesting.
+// The token is a megastring. We don't allow any kind of mega nesting.
 
             case "`":
                 if (mega_mode) {
@@ -1506,10 +1509,15 @@ var jslint = (function JSLint() {
             if (!rx_identifier.test(id)) {
                 return id;
             }
-        } else {
-            if (!name.identifier) {
-                return stop("expected_identifier_a", name);
+        } else if (id === "`") {
+            if (name.value.length === 1) {
+                id = name.value[0].value;
+                if (!rx_identifier.test(id)) {
+                    return id;
+                }
             }
+        } else if (!name.identifier) {
+            return stop("expected_identifier_a", name);
         }
 
 // If we have seen this name before, increment its count.
@@ -1615,7 +1623,7 @@ var jslint = (function JSLint() {
                     if (object[token.value] !== undefined) {
                         warn("duplicate_a", token);
                     } else if (token.value === "__proto__") {
-                        warn("bad_property_name_a", token);
+                        warn("bad_property_a", token);
                     } else {
                         object[token.value] = token;
                     }
@@ -2048,7 +2056,7 @@ var jslint = (function JSLint() {
         the_block.body = special === "body";
 
 // All top level function bodies should include the "use strict" pragma unless
-// the whole file is strict.
+// the whole file is strict or the file is a module.
 
         if (the_block.body && stack.length <= 1 && !global.strict) {
             if (
@@ -2059,7 +2067,7 @@ var jslint = (function JSLint() {
                 functionage.strict = true;
                 advance("(string)");
                 advance(";");
-            } else {
+            } else if (module_mode !== true) {
                 warn(
                     "expected_a_before_b",
                     next_token,
@@ -2107,6 +2115,7 @@ var jslint = (function JSLint() {
 //      e[b]
 //      e()
 //      identifier
+
         var id = left.id;
         if (
             !left.identifier &&
@@ -2350,6 +2359,12 @@ var jslint = (function JSLint() {
         return token;
     });
     constant("Infinity", "number", Infinity);
+    constant("isNaN", "function", function () {
+        if (option.es6) {
+            warn("expected_a_b", token, "Number.isNaN", "isNaN");
+        }
+        return token;
+    });
     constant("NaN", "number", NaN);
     constant("null", "null", null);
     constant("this", "object", function () {
@@ -2403,52 +2418,10 @@ var jslint = (function JSLint() {
         if (left.id !== "function") {
             left_check(left, the_paren);
         }
-        the_paren.expression = [left];
-        if (left.identifier) {
-            if (left.new) {
-                if (
-                    left.id.charAt(0) > "Z" ||
-                    left.id === "Boolean" ||
-                    left.id === "Number" ||
-                    left.id === "String" ||
-                    (left.id === "Symbol" && option.es6)
-                ) {
-                    warn("unexpected_a", left, "new");
-                } else if (left.id === "Function") {
-                    if (!option.eval) {
-                        warn("unexpected_a", left, "new Function");
-                    }
-                } else if (left.id === "Array") {
-                    warn("expected_a_b", left, "[]", "new Array");
-                } else if (left.id === "Object") {
-                    warn(
-                        "expected_a_b",
-                        left,
-                        "Object.create(null)",
-                        "new Object"
-                    );
-                }
-            } else {
-                if (
-                    left.id.charAt(0) >= "A" &&
-                    left.id.charAt(0) <= "Z" &&
-                    left.id !== "Boolean" &&
-                    left.id !== "Number" &&
-                    left.id !== "String" &&
-                    left.id !== "Symbol"
-                ) {
-                    warn(
-                        "expected_a_before_b",
-                        left,
-                        "new",
-                        artifact(left)
-                    );
-                }
-                if (functionage.arity === "statement") {
-                    functionage.name.calls[left.id] = left;
-                }
-            }
+        if (functionage.arity === "statement" && left.identifier) {
+            functionage.name.calls[left.id] = left;
         }
+        the_paren.expression = [left];
         if (next_token.id !== ")") {
             (function next() {
                 var ellipsis;
@@ -2514,14 +2487,11 @@ var jslint = (function JSLint() {
     infix("[", 170, function (left) {
         var the_token = token;
         var the_subscript = expression(0);
-        if (
-            the_subscript.id === "(string)" &&
-            rx_identifier.test(the_subscript.value)
-        ) {
-            warn("subscript_a", the_subscript);
-            survey(the_subscript);
-        } else if (the_subscript.id === "`") {
-            warn("unexpected_a", the_subscript);
+        if (the_subscript.id === "(string)" || the_subscript.id === "`") {
+            var name = survey(the_subscript);
+            if (rx_identifier.test(name)) {
+                warn("subscript_a", the_subscript, name);
+            }
         }
         left_check(left, the_token);
         the_token.expression = [left, the_subscript];
@@ -2529,7 +2499,7 @@ var jslint = (function JSLint() {
         return the_token;
     });
     infix("=>", 170, function (left) {
-        return stop("expected_a_before_b", left, "(", artifact(left));
+        return stop("wrap_parameter", left);
     });
 
     function do_tick() {
@@ -2608,11 +2578,11 @@ var jslint = (function JSLint() {
     });
     prefix("new", function () {
         var the_new = token;
-        next_token.new = true;
-        the_new.expression = expression(150);
-        if (the_new.expression.id !== "(") {
+        var right = expression(160);
+        if (next_token.id !== "(") {
             warn("expected_a_before_b", next_token, "()", artifact(next_token));
         }
+        the_new.expression = right;
         return the_new;
     });
     prefix("typeof");
@@ -3294,26 +3264,49 @@ var jslint = (function JSLint() {
     });
     stmt("import", function () {
         var the_import = token;
+        var name;
         if (!option.es6) {
             warn("es6", the_import);
         } else if (typeof module_mode === "object") {
             warn("unexpected_directive_a", module_mode, module_mode.directive);
         }
         module_mode = true;
-        if (!next_token.identifier) {
-            return stop("expected_identifier_a");
+        if (next_token.identifier) {
+            name = next_token;
+            advance();
+            if (name.id === "ignore") {
+                warn("unexpected_a", name);
+            }
+            enroll(name, "variable", true);
+            the_import.name = name;
+        } else {
+            var names = [];
+            advance("{");
+            if (next_token.id !== "}") {
+                while (true) {
+                    if (!next_token.identifier) {
+                        stop("expected_identifier_a");
+                    }
+                    name = next_token;
+                    advance();
+                    if (name.id === "ignore") {
+                        warn("unexpected_a", name);
+                    }
+                    enroll(name, "variable", true);
+                    names.push(name);
+                    if (next_token.id !== ",") {
+                        break;
+                    }
+                    advance(",");
+                }
+            }
+            advance("}");
+            the_import.name = names;
         }
-        var name = next_token;
-        advance();
-        if (name.id === "ignore") {
-            warn("unexpected_a", name);
-        }
-        enroll(name, "variable", true);
         advance("from");
         advance("(string)");
         the_import.import = token;
-        the_import.name = name;
-        if (!rx_identifier.test(token.value)) {
+        if (!rx_module.test(token.value)) {
             warn("bad_module_name_a", token);
         }
         imports.push(token.value);
@@ -3770,7 +3763,11 @@ var jslint = (function JSLint() {
             var left = thing.expression[0];
             var right = thing.expression[1];
             if (left.id === "NaN" || right.id === "NaN") {
-                warn("isNaN", thing);
+                if (option.es6) {
+                    warn("number_isNaN", thing);
+                } else {
+                    warn("isNaN", thing);
+                }
             } else if (left.id === "typeof") {
                 if (right.id !== "(string)") {
                     if (right.id !== "typeof") {
@@ -4013,26 +4010,88 @@ var jslint = (function JSLint() {
     postaction("binary", "=>", postaction_function);
     postaction("binary", "(", function (thing) {
         var left = thing.expression[0];
+        var the_new;
+        if (left.id === "new") {
+            the_new = left;
+            left = left.expression;
+        }
         if (left.id === "function") {
             if (!thing.wrapped) {
                 warn("wrap_immediate", thing);
             }
+        } else if (left.identifier) {
+            if (the_new !== undefined) {
+                if (
+                    left.id.charAt(0) > "Z" ||
+                    left.id === "Boolean" ||
+                    left.id === "Number" ||
+                    left.id === "String" ||
+                    (left.id === "Symbol" && option.es6)
+                ) {
+                    warn("unexpected_a", the_new);
+                } else if (left.id === "Function") {
+                    if (!option.eval) {
+                        warn("unexpected_a", left, "new Function");
+                    }
+                } else if (left.id === "Array") {
+                    warn("expected_a_b", left, "[]", "new Array");
+                } else if (left.id === "Object") {
+                    warn(
+                        "expected_a_b",
+                        left,
+                        "Object.create(null)",
+                        "new Object"
+                    );
+                }
+            } else {
+                if (
+                    left.id.charAt(0) >= "A" &&
+                    left.id.charAt(0) <= "Z" &&
+                    left.id !== "Boolean" &&
+                    left.id !== "Number" &&
+                    left.id !== "String" &&
+                    left.id !== "Symbol"
+                ) {
+                    warn(
+                        "expected_a_before_b",
+                        left,
+                        "new",
+                        artifact(left)
+                    );
+                }
+            }
         } else if (left.id === ".") {
-            var newflag = left.expression.new === true;
-            var cack = newflag;
+            var cack = the_new !== undefined;
             if (left.expression.id === "Date" && left.name.id === "UTC") {
                 cack = !cack;
             }
             if (rx_cap.test(left.name.id) !== cack) {
-                if (newflag) {
-                    warn("unexpected_a", left.expression, "new");
+                if (the_new !== undefined) {
+                    warn("unexpected_a", the_new);
                 } else {
                     warn(
                         "expected_a_before_b",
                         left.expression,
                         "new",
-                        left.expression.id
+                        left.name.id
                     );
+                }
+            }
+            if (left.name.id === "getTime") {
+                var l1 = left.expression;
+                if (l1.id === "(") {
+                    var l2 = l1.expression;
+                    if (l2.length === 1) {
+                        var l3 = l2[0];
+                        if (l3.id === "new" && l3.expression.id === "Date") {
+                            warn(
+                                "expected_a_b",
+                                l3,
+                                "Date.now()",
+                                "new Date().getTime()"
+                            );
+                        }
+                    }
                 }
             }
         }
@@ -4054,9 +4113,17 @@ var jslint = (function JSLint() {
     postaction("statement", "function", postaction_function);
     postaction("statement", "import", function (the_thing) {
         var name = the_thing.name;
-        name.init = true;
-        name.dead = false;
-        blockage.live.push(name);
+        if (Array.isArray(name)) {
+            name.forEach(function (name) {
+                name.dead = false;
+                name.init = true;
+                blockage.live.push(name);
+            });
+        } else {
+            name.dead = false;
+            name.init = true;
+            blockage.live.push(name);
+        }
         return top_level_only(the_thing);
     });
     postaction("statement", "let", action_var);
@@ -4621,7 +4688,7 @@ var jslint = (function JSLint() {
         }
         return {
             directives: directives,
-            edition: "2016-04-08",
+            edition: "2016-05-25",
             functions: functions,
             global: global,
             id: "(JSLint)",
